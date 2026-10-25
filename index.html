@@ -1,0 +1,352 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Factorial Calculator | Satyanshu Saxena</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    min-height: 100vh;
+    background: linear-gradient(-45deg,
+        #090979, #7209b7, #f72585, #00b4d8, #06d6a0);
+    background-size: 400% 400%;
+    animation: backgroundMove 12s ease infinite;
+}
+
+@keyframes backgroundMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+header {
+    text-align: center;
+    padding: 28px 12px;
+    background: rgba(0, 0, 0, 0.35);
+    border-bottom: 3px solid #00ffff;
+    box-shadow: 0 5px 25px #00ffff55;
+}
+
+header h1 {
+    font-size: clamp(25px, 5vw, 40px);
+    color: #fff;
+    text-shadow: 3px 3px 0 #ff006e,
+                 6px 6px 0 #3a86ff,
+                 0 0 20px #00ffff;
+}
+
+header p {
+    margin-top: 12px;
+    color: #ffe66d;
+}
+
+.container {
+    width: 92%;
+    max-width: 850px;
+    margin: 35px auto;
+}
+
+.card {
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 22px;
+    background: rgba(10, 10, 35, 0.72);
+    border: 2px solid #ffffff55;
+    box-shadow: 0 12px 30px #0005;
+    backdrop-filter: blur(12px);
+}
+
+h2 {
+    color: #00ffff;
+    margin-bottom: 18px;
+    text-shadow: 0 0 12px #00ffff88;
+}
+
+.input-box {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+input {
+    flex: 1;
+    min-width: 180px;
+    padding: 15px;
+    font-size: 18px;
+    border: 2px solid #00ffff;
+    border-radius: 12px;
+    outline: none;
+    background: #fff;
+    color: #222;
+}
+
+button {
+    padding: 15px 22px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(45deg,
+        #ff006e, #8338ec, #3a86ff, #06d6a0);
+    background-size: 250% 250%;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    animation: buttonColor 5s infinite;
+}
+
+@keyframes buttonColor {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+button:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 0 22px #ff00ff;
+}
+
+#result {
+    margin-top: 28px;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.result-label {
+    font-size: 20px;
+    color: #ffe66d;
+    margin-bottom: 12px;
+}
+
+.result-number {
+    font-size: clamp(35px, 8vw, 65px);
+    font-weight: 900;
+    color: #00ffff;
+    text-shadow:
+        1px 1px 0 #ff006e,
+        2px 2px 0 #ff006e,
+        3px 3px 0 #8338ec,
+        4px 4px 0 #8338ec,
+        5px 5px 0 #3a86ff,
+        8px 8px 15px #000,
+        0 0 25px #00ffff;
+    animation: number3D 0.7s ease;
+}
+
+@keyframes number3D {
+    from {
+        transform: perspective(400px) rotateX(70deg) scale(0.3);
+        opacity: 0;
+    }
+    to {
+        transform: perspective(400px) rotateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.steps {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 12px;
+    background: linear-gradient(120deg, #240046, #0077b6);
+    border: 1px solid #00ffff;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+.theory h3 {
+    margin: 18px 0 10px;
+    color: #ffbe0b;
+}
+
+.theory p {
+    line-height: 1.9;
+    margin-bottom: 12px;
+}
+
+.hindi {
+    color: #a7ffeb;
+}
+
+.examples {
+    color: #ff9de2;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 10px;
+    background: rgba(0, 0, 0, 0.55);
+    border-top: 3px solid #00ffff;
+    line-height: 2;
+}
+
+footer strong {
+    color: #00ffff;
+    text-shadow: 0 0 12px #00ffff;
+}
+
+.message {
+    color: #ffbe0b;
+    margin-top: 12px;
+}
+
+@media(max-width: 550px) {
+    .card { padding: 18px; }
+    .input-box { flex-direction: column; }
+    input, button { width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🧮 Factorial of a Number</h1>
+    <p>✨ Smart Calculator | 3D Numbers | Multi-Color Design ✨</p>
+</header>
+
+<main class="container">
+
+    <section class="card">
+        <h2>🚀 Calculate Factorial</h2>
+
+        <div class="input-box">
+            <input type="number"
+                   id="number"
+                   min="0"
+                   max="170"
+                   step="1"
+                   placeholder="Enter a number (0–170)"
+                   aria-label="Enter a non-negative integer">
+
+            <button id="calculate">Calculate ✨</button>
+        </div>
+
+        <div id="result" aria-live="polite"></div>
+    </section>
+
+    <section class="card theory">
+        <h2>📘 Theory: Factorial of a Number</h2>
+
+        <h3>1. What is a Factorial?</h3>
+        <p>
+            The factorial of a non-negative integer is the product
+            of all positive integers less than or equal to that number.
+            It is represented by the symbol <b>n!</b>.
+        </p>
+
+        <h3>2. Factorial Formula</h3>
+        <p><b>n! = n × (n − 1) × (n − 2) × ... × 2 × 1</b></p>
+
+        <h3>3. Examples</h3>
+        <p class="examples">
+            3! = 3 × 2 × 1 = 6<br>
+            4! = 4 × 3 × 2 × 1 = 24<br>
+            5! = 5 × 4 × 3 × 2 × 1 = 120
+        </p>
+
+        <h3>4. Special Rule</h3>
+        <p>By definition, <b>0! = 1</b>.</p>
+
+        <hr style="border-color:#00ffff; margin:22px 0;">
+
+        <h3 class="hindi">📗 फैक्टोरियल क्या होता है?</h3>
+        <p class="hindi">
+            किसी गैर-ऋणात्मक पूर्ण संख्या से लेकर 1 तक की सभी
+            धनात्मक पूर्ण संख्याओं का गुणनफल फैक्टोरियल कहलाता है।
+            इसे n! से दर्शाया जाता है।
+        </p>
+
+        <h3 class="hindi">1. फैक्टोरियल का सूत्र</h3>
+        <p class="hindi">
+            n! = n × (n − 1) × (n − 2) × ... × 2 × 1
+        </p>
+
+        <h3 class="hindi">2. उदाहरण</h3>
+        <p class="hindi">
+            3! = 3 × 2 × 1 = 6<br>
+            4! = 4 × 3 × 2 × 1 = 24<br>
+            5! = 5 × 4 × 3 × 2 × 1 = 120
+        </p>
+
+        <h3 class="hindi">3. विशेष नियम</h3>
+        <p class="hindi">
+            शून्य का फैक्टोरियल हमेशा 1 होता है, अर्थात 0! = 1।
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <p>Designed & Developed with ❤️ by</p>
+    <strong> SATYANSHU SAXENA </strong>
+    <p>HTML | CSS | JavaScript | 3D Animation</p>
+    <p>© 2026 Factorial Calculator. All Rights Reserved.</p>
+</footer>
+
+<script>
+const numberInput = document.getElementById("number");
+const result = document.getElementById("result");
+const calculateButton = document.getElementById("calculate");
+
+function calculateFactorial() {
+    const rawValue = numberInput.value.trim();
+
+    if (rawValue === "") {
+        result.innerHTML =
+            '<p class="message">⚠️ Please enter a number!</p>';
+        numberInput.focus();
+        return;
+    }
+
+    const n = Number(rawValue);
+
+    if (!Number.isInteger(n) || n < 0 || n > 170) {
+        result.innerHTML =
+            '<p class="message">❌ Enter a whole number from 0 to 170.</p>';
+        return;
+    }
+
+    let factorial = 1;
+    const steps = [];
+
+    for (let i = n; i >= 1; i--) {
+        factorial *= i;
+        steps.push(i);
+    }
+
+    const expression = n === 0
+        ? "0! = 1"
+        : `${n}! = ${steps.join(" × ")} = ${factorial}`;
+
+    result.innerHTML = `
+        <div class="result-label">🎉 Your Factorial Result</div>
+        <div class="result-number">${factorial}</div>
+        <div class="steps">
+            <b>📌 Calculation:</b><br>
+            ${expression}
+        </div>
+    `;
+}
+
+calculateButton.addEventListener("click", calculateFactorial);
+
+numberInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        calculateFactorial();
+    }
+});
+</script>
+
+</body>
+</html>
+```
